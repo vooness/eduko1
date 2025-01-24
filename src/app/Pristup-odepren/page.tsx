@@ -9,7 +9,7 @@ export default function AccessDeniedPage() {
     <div className="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center">
       <h1 className="text-4xl font-bold mb-4">Přístup zamítnut</h1>
       <p className="text-lg text-gray-300 mb-8">
-        K této stránce se můžete dostat pouze pomocí speciálního odkazu.
+        Na tento web se můžete dostat pouze prostřednictvím speciálního odkazu.
       </p>
       <button
         onClick={() => router.push("/")}
