@@ -80,7 +80,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center py-4">
         {/* Logo */}
         <a
-          href="#home"
+          href="/"
           className="text-2xl font-bold bg-gradient-to-r from-green-500 to-blue-500 text-transparent bg-clip-text"
         >
           EDUKO
@@ -99,6 +99,15 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center space-x-8">
           {/* Navigation Links */}
           <ul className="flex items-center gap-8">
+          <li>
+              <a
+                href="/InteraktivniCviceni"
+                className="relative group transition-all duration-300"
+              >
+                INTERAKTIVNÍ CVIČENÍ
+                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            </li>
             <li>
               <a
                 href="#knihy"
@@ -117,15 +126,7 @@ const Navbar = () => {
                 <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
               </a>
             </li>
-            <li>
-              <a
-                href="#informace"
-                className="relative group transition-all duration-300"
-              >
-                INFORMACE
-                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
-              </a>
-            </li>
+          
             <li>
               <a
                 href="#kontakt"

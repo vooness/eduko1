@@ -68,7 +68,7 @@ const HeroSection = () => {
             className="flex flex-col gap-4 sm:gap-6 text-center lg:text-left flex-1"
           >
             <p className="text-base sm:text-lg text-gray-300 mb-6">
-              Učebnice • Semináře • Elektronické výukové materiály
+              Učebnice • Semináře • Elektronické výukové materiály • Interaktivní cvičení
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-6xl font-bold leading-tight text-green-600 ">
               Zlepšujeme vzdělávání <br />
@@ -80,10 +80,10 @@ const HeroSection = () => {
             </p>
             <div className="flex flex-col gap-4 mt-4 justify-center items-center lg:flex-row lg:justify-start lg:items-start">
   <a
-    href="#contact"
+    href="/InteraktivniCviceni"
     className="w-full max-w-xs px-5 py-2  sm:py-3 border-2 border-green-600 text-white font-medium rounded-full bg-green-600 hover:text-white transition text-center"
   >
-    Prohlédnout nabídku →
+    Interaktivní cvičení →
   </a>
   <a
     href="#contact"
