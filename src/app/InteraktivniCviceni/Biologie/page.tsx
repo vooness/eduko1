@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 // Placeholder data pro cvičení
 const exercises = [
-  { name: "Základy biologie", type: "Quiz", grade: "1. ročník" },
+  { name: "Základy biologie", type: "Quiz", grade: "1. ročník", path: "/InteraktivniCviceni/Biologie/ZakladyBiologie" },
   { name: "Buňky a jejich funkce", type: "Drag & Drop", grade: "2. ročník" },
   { name: "Fotosyntéza", type: "Tabulka", grade: "3. ročník" },
   { name: "Lidské tělo", type: "Pexeso", grade: "4. ročník" },
@@ -50,6 +50,7 @@ export default function BiologiePage() {
           </button>
         </div>
 
+        {/* Nadpis a popis */}
         <div className="max-w-4xl w-full text-center mb-10">
           <h1 className="text-5xl font-extrabold text-white mb-4">Cvičení z Biologie</h1>
           <p className="text-lg text-gray-300">
@@ -67,7 +68,16 @@ export default function BiologiePage() {
               <h2 className="text-2xl font-bold text-white mb-2">{exercise.name}</h2>
               <p className="text-gray-200 mb-1">Typ: {exercise.type}</p>
               <p className="text-gray-200">Ročník: {exercise.grade}</p>
-              <button className="mt-4 px-4 py-2 bg-white text-green-600 font-semibold rounded hover:bg-green-700 hover:text-white transition-all">
+              <button
+                className="mt-4 px-4 py-2 bg-white text-green-600 font-semibold rounded hover:bg-green-700 hover:text-white transition-all"
+                onClick={() => {
+                  if (exercise.path) {
+                    router.push(exercise.path); // Přesměrování na specifickou stránku
+                  } else {
+                    alert("Cvičení zatím není dostupné.");
+                  }
+                }}
+              >
                 Spustit cvičení
               </button>
             </div>
