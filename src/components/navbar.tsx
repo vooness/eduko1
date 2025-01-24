@@ -83,7 +83,7 @@ const Navbar = () => {
           href="/"
           className="text-2xl font-bold bg-gradient-to-r from-green-500 to-blue-500 text-transparent bg-clip-text"
         >
-          EDUKO
+          I-EDUKO
         </a>
 
         {/* Search bar */}
