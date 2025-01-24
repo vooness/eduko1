@@ -1,10 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    reactStrictMode: true, // Doporučeno pro lepší debugování
+    reactStrictMode: true,
     experimental: {
-      appDir: true, // Pokud používáte složku "app" pro stránky
+      appDir: true,
     },
-    // Další volitelná nastavení
     async headers() {
       return [
         {
@@ -12,11 +11,11 @@ const nextConfig = {
           headers: [
             {
               key: "X-Frame-Options",
-              value: "DENY", // Zabránění načítání v iframu (pro bezpečnost)
+              value: "DENY",
             },
             {
               key: "Referrer-Policy",
-              value: "strict-origin-when-cross-origin", // Nastavení politiky referreru
+              value: "no-referrer-when-downgrade", // Povolení předávání refereru na většinu requestů
             },
           ],
         },

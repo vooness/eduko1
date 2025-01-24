@@ -2,34 +2,28 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const referer = req.headers.get("referer"); // Získáme referer z hlaviček požadavku
-  const allowedReferer = "flexibook.com"; // Povolená doména (FlexiBook)
+  const url = req.nextUrl; // Získáme URL požadavku
+  const token = url.searchParams.get("token"); // Získáme token z URL
 
-  // Debugging: Zobrazíme referer v konzoli pro ladění
-  console.log("Referer received:", referer);
+  const validToken = "secureToken123"; // Předdefinovaný platný token
 
-  // Povolení přístupu, pokud referer obsahuje povolenou doménu
-  if (referer && referer.includes(allowedReferer)) {
-    console.log("Access allowed."); // Debug: Přístup povolen
+  // Pokud token odpovídá platnému tokenu, povolíme přístup
+  if (token === validToken) {
     return NextResponse.next();
   }
 
-  // Debug: Přístup zamítnut
-  console.log("Access denied. Invalid referer:", referer);
-
-  // Pokud referer neodpovídá, vrátíme zamítnutí přístupu
+  // Pokud token není platný nebo chybí, zamítneme přístup
   return new NextResponse(
     `<html>
       <body style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px;">
         <h1>Přístup zamítnut</h1>
-        <p>Stránky jsou přístupné pouze prostřednictvím odkazu ve FlexiBooku.</p>
+        <p>Pro přístup použijte odkaz nebo QR kód z FlexiBooku.</p>
       </body>
     </html>`,
     {
-      status: 403, // Stavový kód "403 Forbidden"
+      status: 403, // HTTP stavový kód "403 Forbidden"
       headers: {
-        "Content-Type": "text/html", // Odpověď je ve formátu HTML
-        "Cache-Control": "no-store", // Zabránění cachování
+        "Content-Type": "text/html", // Obsah odpovědi je HTML
       },
     }
   );
@@ -37,5 +31,5 @@ export function middleware(req: NextRequest) {
 
 // Určení cest, na které se middleware vztahuje
 export const config = {
-  matcher: ["/((?!api|_next|favicon.ico).*)"], // Middleware se použije na všechny stránky kromě API a statických souborů
+  matcher: ["/((?!api|_next|favicon.ico).*)"], // Middleware se aplikuje na všechny stránky kromě API a statických souborů
 };
