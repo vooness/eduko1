@@ -2,31 +2,19 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const url = req.nextUrl; // Získáme URL požadavku
+  const url = req.nextUrl;
   const token = url.searchParams.get("token"); // Získáme token z URL
 
-  const validToken = "secureToken123"; // Předdefinovaný platný token
+  // Definujte platný token
+  const validToken = "secureToken123";
 
-  // Pokud token odpovídá platnému tokenu, povolíme přístup
+  // Kontrola tokenu
   if (token === validToken) {
-    return NextResponse.next();
+    return NextResponse.next(); // Přístup povolen
   }
 
-  // Pokud token není platný nebo chybí, zamítneme přístup
-  return new NextResponse(
-    `<html>
-      <body style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px;">
-        <h1>Přístup zamítnut</h1>
-        <p>Pro přístup použijte odkaz nebo QR kód z FlexiBooku.</p>
-      </body>
-    </html>`,
-    {
-      status: 403, // HTTP stavový kód "403 Forbidden"
-      headers: {
-        "Content-Type": "text/html", // Obsah odpovědi je HTML
-      },
-    }
-  );
+  // Pokud token není platný nebo chybí, přesměrování na chybovou stránku
+  return NextResponse.redirect(new URL("/access-denied", req.url));
 }
 
 // Určení cest, na které se middleware vztahuje
