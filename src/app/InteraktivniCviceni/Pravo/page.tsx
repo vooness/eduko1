@@ -7,18 +7,18 @@ import { useState } from "react";
 
 // Data pro cvičení
 const exercisesData = [
-  { name: "Občanské právo", type: "Quiz", grade: "1. ročník" },
-  { name: "Právní dokumenty", type: "Drag & Drop", grade: "2. ročník" },
-  { name: "Soudní procesy", type: "Simulace", grade: "3. ročník" },
-  { name: "Právní výklady", type: "Tabulka", grade: "4. ročník" },
-  { name: "Trestní právo", type: "Quiz", grade: "2. ročník" },
-  { name: "Právní základy", type: "Výpočet", grade: "1. ročník" },
-  { name: "Zákoník práce", type: "Pexeso", grade: "3. ročník" },
-  { name: "Soudní řízení", type: "Drag & Drop", grade: "4. ročník" },
-  { name: "Rodinné právo", type: "Tabulka", grade: "2. ročník" },
-  { name: "Právní odpovědnost", type: "Simulace", grade: "3. ročník" },
-  { name: "Základy ústavního práva", type: "Quiz", grade: "1. ročník" },
-  { name: "Právní dohody", type: "Výpočet", grade: "4. ročník" },
+  { name: "Občanské právo", type: "Quiz", grade: "1. ročník", difficulty: "Lehké" },
+  { name: "Právní dokumenty", type: "Drag & Drop", grade: "2. ročník", difficulty: "Střední" },
+  { name: "Soudní procesy", type: "Simulace", grade: "3. ročník", difficulty: "Těžké" },
+  { name: "Právní výklady", type: "Tabulka", grade: "4. ročník", difficulty: "Těžké" },
+  { name: "Trestní právo", type: "Quiz", grade: "2. ročník", difficulty: "Střední" },
+  { name: "Právní základy", type: "Výpočet", grade: "1. ročník", difficulty: "Lehké" },
+  { name: "Zákoník práce", type: "Pexeso", grade: "3. ročník", difficulty: "Střední" },
+  { name: "Soudní řízení", type: "Drag & Drop", grade: "4. ročník", difficulty: "Těžké" },
+  { name: "Rodinné právo", type: "Tabulka", grade: "2. ročník", difficulty: "Střední" },
+  { name: "Právní odpovědnost", type: "Simulace", grade: "3. ročník", difficulty: "Těžké" },
+  { name: "Základy ústavního práva", type: "Quiz", grade: "1. ročník", difficulty: "Lehké" },
+  { name: "Právní dohody", type: "Výpočet", grade: "4. ročník", difficulty: "Těžké" },
 ];
 
 export default function PravoPage() {
@@ -26,22 +26,22 @@ export default function PravoPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterGrade, setFilterGrade] = useState("");
   const [filterType, setFilterType] = useState("");
+  const [filterDifficulty, setFilterDifficulty] = useState("");
 
   // Filtrování cvičení na základě vyhledávacího termínu, ročníku a typu
   const filteredExercises = exercisesData.filter((exercise) => {
     const matchName = exercise.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchGrade = filterGrade ? exercise.grade === filterGrade : true;
     const matchType = filterType ? exercise.type === filterType : true;
+    const matchDifficulty = filterDifficulty ? exercise.difficulty === filterDifficulty : true;
 
-    return matchName && matchGrade && matchType;
+    return matchName && matchGrade && matchType && matchDifficulty;
   });
 
   return (
     <div className="bg-gray-900 text-white min-h-screen flex flex-col">
-      {/* Navbar */}
       <Navbar />
 
-      {/* Hlavní obsah */}
       <div className="flex-grow p-6 flex flex-col items-center mt-28 mb-28">
         {/* Tlačítko Zpět */}
         <div className="w-full max-w-7xl mb-6">
@@ -70,13 +70,13 @@ export default function PravoPage() {
             Procvičte si klíčové právní znalosti a zdokonalte své dovednosti. Níže můžete vyhledávat a filtrovat cvičení.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+          <div className="flex flex-wrap md:flex-nowrap gap-4 justify-center items-center mb-6 mt-6">
             <input
               type="text"
               placeholder="Vyhledat cvičení..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-4 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="flex-grow md:flex-none md:w-1/3 px-4 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             />
 
             <select
@@ -104,24 +104,37 @@ export default function PravoPage() {
               <option value="Výpočet">Výpočet</option>
               <option value="Pexeso">Pexeso</option>
             </select>
+
+            <select
+              value={filterDifficulty}
+              onChange={(e) => setFilterDifficulty(e.target.value)}
+              className="px-4 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              <option value="">Všechny obtížnosti</option>
+              <option value="Lehké">Lehké</option>
+              <option value="Střední">Střední</option>
+              <option value="Těžké">Těžké</option>
+            </select>
           </div>
         </div>
 
         {/* Zobrazení vyfiltrovaných cvičení */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 max-w-7xl w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 max-w-7xl w-full">
           {filteredExercises.map((exercise, index) => (
             <div
               key={index}
-              className="p-6 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl shadow-lg text-center hover:scale-105 transition-transform"
+              className="relative p-6 bg-gray-800 rounded-xl shadow-lg text-center hover:shadow-2xl transition-shadow"
             >
-              <h2 className="text-2xl font-bold text-white mb-2">{exercise.name}</h2>
-              <p className="text-gray-200 mb-1">Typ: {exercise.type}</p>
-              <p className="text-gray-200">Ročník: {exercise.grade}</p>
+              <div className="absolute top-2 left-2 px-2 py-1 bg-green-600 text-white text-sm rounded">
+                {exercise.difficulty}
+              </div>
+
+              <h2 className="text-2xl font-bold text-white mb-2 mt-4">{exercise.name}</h2>
+              <p className="text-gray-300 mb-1">Typ: {exercise.type}</p>
+              <p className="text-gray-300">Ročník: {exercise.grade}</p>
               <button
-                className="mt-4 px-4 py-2 bg-white text-green-600 font-semibold rounded hover:bg-green-700 hover:text-white transition-all"
-                onClick={() => {
-                  alert(`Spouštím cvičení: ${exercise.name}`);
-                }}
+                className="mt-4 px-4 py-2 bg-green-600 text-white font-semibold rounded hover:bg-green-700 transition-colors"
+                onClick={() => alert(`Spouštím cvičení: ${exercise.name}`)}
               >
                 Spustit cvičení
               </button>
@@ -137,7 +150,6 @@ export default function PravoPage() {
         </div>
       </div>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

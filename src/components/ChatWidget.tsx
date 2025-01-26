@@ -1,98 +1,116 @@
-// components/ChatWidget.tsx
-import React, { useState } from "react";
+import { useState } from 'react';
+import { MessageCircle, X, Send } from 'lucide-react';
 
-const ChatWidget: React.FC = () => {
+export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{ sender: "user" | "bot"; text: string }[]>([]);
-  const [inputValue, setInputValue] = useState("");
+  const [messages, setMessages] = useState<Array<{text: string, isBot: boolean}>>([]);
+  const [inputText, setInputText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const toggleWidget = () => {
-    setIsOpen(!isOpen);
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputText.trim()) return;
 
-  // Odeslání zprávy na /api/chat
-  const handleSend = async () => {
-    if (!inputValue.trim()) return;
+    try {
+      setIsLoading(true);
+      const userMessage = inputText;
+      setInputText('');
+      setMessages(prev => [...prev, { text: userMessage, isBot: false }]);
 
-    // Přidáme zprávu uživatele do lokálního chatu
-    setMessages((prev) => [...prev, { sender: "user", text: inputValue }]);
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userMessage })
+      });
 
-    // Zavoláme vlastní API
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userMessage: inputValue }),
-    });
-    const data = await res.json();
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-    setMessages((prev) => [...prev, { sender: "bot", text: data.botReply }]);
-    setInputValue("");
+      const data = await response.json();
+      if (!data.message) {
+        throw new Error('No response data');
+      }
+
+      setMessages(prev => [...prev, { text: data.message, isBot: true }]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      setMessages(prev => [...prev, {
+        text: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        isBot: true
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="fixed bottom-4 right-4">
-      {/* Tlačítko pro otevření/zavření widgetu */}
-      {!isOpen && (
-        <button
-          onClick={toggleWidget}
-          className="bg-green-600 text-white px-4 py-2 rounded-full shadow-lg"
-        >
-          EDUKO Bot
-        </button>
-      )}
+    <div className="fixed bottom-4 right-4 z-50">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="p-4 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 transition-colors"
+        aria-label="Toggle chat"
+      >
+        {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
+      </button>
 
       {isOpen && (
-        <div className="w-80 h-96 bg-white text-black rounded-lg shadow-lg flex flex-col">
-          {/* Hlavička */}
-          <div className="bg-green-600 text-white p-3 flex justify-between items-center">
-            <span className="font-bold">EDUKO ChatBot</span>
-            <button onClick={toggleWidget} className="text-white font-bold">×</button>
-          </div>
-
-          {/* Chat zóna */}
-          <div className="flex-1 overflow-y-auto p-3 space-y-2">
-            {messages.map((msg, idx) => (
-              <div
-                key={idx}
-                className={`${
-                  msg.sender === "user" ? "text-right" : "text-left"
-                }`}
-              >
-                <p
-                  className={`inline-block p-2 rounded-md ${
-                    msg.sender === "user"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-gray-200 text-gray-800"
-                  }`}
-                >
-                  {msg.text}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {/* Vstupní řádek */}
-          <div className="p-2 border-t border-gray-300 flex">
-            <input
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleSend();
-              }}
-              className="flex-1 border border-gray-300 rounded-l px-2"
-              placeholder="Napište dotaz..."
-            />
-            <button
-              onClick={handleSend}
-              className="bg-green-600 text-white px-4 py-2 rounded-r"
+        <div className="absolute bottom-16 right-0 w-96 bg-white rounded-lg shadow-xl">
+          <div className="p-4 bg-green-500 text-white rounded-t-lg flex justify-between items-center">
+            <h3 className="font-semibold">Chat Assistant</h3>
+            <button 
+              onClick={() => setIsOpen(false)}
+              className="hover:bg-green-600 p-1 rounded"
             >
-              Odeslat
+              <X size={20} />
             </button>
           </div>
+
+          <div className="h-96 overflow-y-auto p-4 bg-gray-50">
+            {messages.map((msg, idx) => (
+              <div 
+                key={idx} 
+                className={`mb-3 flex ${msg.isBot ? 'justify-start' : 'justify-end'}`}
+              >
+                <div className={`max-w-[80%] p-3 rounded-lg ${
+                  msg.isBot 
+                    ? 'bg-white text-gray-800 shadow-sm' 
+                    : 'bg-green-500 text-white'
+                }`}>
+                  {msg.text}
+                </div>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="flex justify-center">
+                <div className="bg-white px-4 py-2 rounded-full text-sm text-gray-500">
+                  Typing...
+                </div>
+              </div>
+            )}
+          </div>
+
+          <form onSubmit={handleSubmit} className="p-4 border-t bg-white rounded-b-lg">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                placeholder="Type a message..."
+                disabled={isLoading}
+              />
+              <button 
+                type="submit"
+                disabled={isLoading || !inputText.trim()}
+                className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              >
+                <Send size={20} />
+              </button>
+            </div>
+          </form>
         </div>
       )}
     </div>
   );
-};
-
-export default ChatWidget;
+}

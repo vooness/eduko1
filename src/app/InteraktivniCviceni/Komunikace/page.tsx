@@ -6,18 +6,18 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const exercisesData = [
-  { name: "Pravidla komunikace", type: "Quiz", grade: "1. ročník" },
-  { name: "Emailová etiketa", type: "Drag & Drop", grade: "2. ročník" },
-  { name: "Formální dopisy", type: "Simulace", grade: "3. ročník" },
-  { name: "Elektronická komunikace", type: "Tabulka", grade: "4. ročník" },
-  { name: "Složení dopisů", type: "Výpočet", grade: "2. ročník" },
-  { name: "Komunikační strategie", type: "Quiz", grade: "3. ročník" },
-  { name: "Verbální komunikace", type: "Simulace", grade: "1. ročník" },
-  { name: "Neverbální komunikace", type: "Tabulka", grade: "4. ročník" },
-  { name: "Analýza dopisů", type: "Drag & Drop", grade: "3. ročník" },
-  { name: "Úprava e-mailů", type: "Výpočet", grade: "2. ročník" },
-  { name: "Oficiální dokumenty", type: "Quiz", grade: "4. ročník" },
-  { name: "Prezentace", type: "Simulace", grade: "1. ročník" },
+  { name: "Pravidla komunikace", type: "Quiz", grade: "1. ročník", difficulty: "Lehké" },
+  { name: "Emailová etiketa", type: "Drag & Drop", grade: "2. ročník", difficulty: "Střední" },
+  { name: "Formální dopisy", type: "Simulace", grade: "3. ročník", difficulty: "Těžké" },
+  { name: "Elektronická komunikace", type: "Tabulka", grade: "4. ročník", difficulty: "Těžké" },
+  { name: "Složení dopisů", type: "Výpočet", grade: "2. ročník", difficulty: "Střední" },
+  { name: "Komunikační strategie", type: "Quiz", grade: "3. ročník", difficulty: "Lehké" },
+  { name: "Verbální komunikace", type: "Simulace", grade: "1. ročník", difficulty: "Lehké" },
+  { name: "Neverbální komunikace", type: "Tabulka", grade: "4. ročník", difficulty: "Střední" },
+  { name: "Analýza dopisů", type: "Drag & Drop", grade: "3. ročník", difficulty: "Střední" },
+  { name: "Úprava e-mailů", type: "Výpočet", grade: "2. ročník", difficulty: "Těžké" },
+  { name: "Oficiální dokumenty", type: "Quiz", grade: "4. ročník", difficulty: "Lehké" },
+  { name: "Prezentace", type: "Simulace", grade: "1. ročník", difficulty: "Lehké" },
 ];
 
 export default function KomunikacePage() {
@@ -25,25 +25,21 @@ export default function KomunikacePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterGrade, setFilterGrade] = useState("");
   const [filterType, setFilterType] = useState("");
+  const [filterDifficulty, setFilterDifficulty] = useState("");
 
-  // Filtrace cvičení podle vyhledávacího řetězce, ročníku a typu
   const filteredExercises = exercisesData.filter((exercise) => {
-    // Vyhledávání podle jména (case-insensitive)
     const matchName = exercise.name.toLowerCase().includes(searchTerm.toLowerCase());
-    // Pokud je zvolen nějaký ročník, musí se shodovat
     const matchGrade = filterGrade ? exercise.grade === filterGrade : true;
-    // Pokud je zvolen nějaký typ cvičení, musí se shodovat
     const matchType = filterType ? exercise.type === filterType : true;
+    const matchDifficulty = filterDifficulty ? exercise.difficulty === filterDifficulty : true;
 
-    return matchName && matchGrade && matchType;
+    return matchName && matchGrade && matchType && matchDifficulty;
   });
 
   return (
     <div className="bg-gray-900 text-white min-h-screen flex flex-col">
-      {/* Navbar */}
       <Navbar />
 
-      {/* Hlavní obsah */}
       <div className="flex-grow p-6 flex flex-col items-center mt-28 mb-28">
         {/* Tlačítko Zpět */}
         <div className="w-full max-w-7xl mb-6">
@@ -73,13 +69,13 @@ export default function KomunikacePage() {
           </p>
 
           {/* Vyhledávání a filtry */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+          <div className="flex flex-wrap md:flex-nowrap gap-4 justify-center items-center mb-6 mt-6">
             <input
               type="text"
               placeholder="Vyhledat cvičení..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-4 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="flex-grow md:flex-none md:w-1/3 px-4 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             />
 
             <select
@@ -107,32 +103,43 @@ export default function KomunikacePage() {
               <option value="Simulace">Simulace</option>
               <option value="Pexeso">Pexeso</option>
             </select>
+
+            <select
+              value={filterDifficulty}
+              onChange={(e) => setFilterDifficulty(e.target.value)}
+              className="px-4 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              <option value="">Všechny obtížnosti</option>
+              <option value="Lehké">Lehké</option>
+              <option value="Střední">Střední</option>
+              <option value="Těžké">Těžké</option>
+            </select>
           </div>
         </div>
 
         {/* Grid layout s kartami */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl w-full">
           {filteredExercises.map((exercise, index) => (
             <div
               key={index}
-              className="p-6 bg-gradient-to-br  from-green-500 to-blue-600 rounded-xl shadow-lg text-center hover:scale-105 transition-transform"
+              className="relative p-6 bg-gray-800 rounded-xl shadow-lg text-center hover:shadow-2xl transition-shadow"
             >
-              <h2 className="text-2xl font-bold text-white mb-2">{exercise.name}</h2>
-              <p className="text-gray-200 mb-1">Typ: {exercise.type}</p>
-              <p className="text-gray-200">Ročník: {exercise.grade}</p>
+              <div className="absolute top-2 left-2 px-2 py-1 bg-green-600 text-white text-sm rounded">
+                {exercise.difficulty}
+              </div>
+
+              <h2 className="text-2xl font-bold text-white mb-2 mt-4">{exercise.name}</h2>
+              <p className="text-gray-300 mb-1">Typ: {exercise.type}</p>
+              <p className="text-gray-300">Ročník: {exercise.grade}</p>
               <button
-                onClick={() => {
-                  // Sem můžete přidat router.push nebo zobrazení detailu v modálu
-                  alert(`Spouštím cvičení: ${exercise.name}`);
-                }}
-                className="mt-4 px-4 py-2 bg-white text-green-700 font-semibold rounded hover:bg-green-900 hover:text-white transition-all"
+                className="mt-4 px-4 py-2 bg-green-600 text-white font-semibold rounded hover:bg-green-700 transition-colors"
+                onClick={() => alert(`Spouštím cvičení: ${exercise.name}`)}
               >
                 Spustit cvičení
               </button>
             </div>
           ))}
 
-          {/* Pokud filtry nenajdou žádné cvičení */}
           {filteredExercises.length === 0 && (
             <div className="col-span-full text-center text-gray-300 mt-6">
               <p>Žádné cvičení neodpovídá zadaným kritériím.</p>
@@ -141,7 +148,6 @@ export default function KomunikacePage() {
         </div>
       </div>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

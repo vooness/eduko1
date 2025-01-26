@@ -6,18 +6,18 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const exercisesData = [
-  { name: "Rozpočet firmy", type: "Quiz", grade: "1. ročník" },
-  { name: "Analýza trhu", type: "Drag & Drop", grade: "2. ročník" },
-  { name: "Závazky a pohledávky", type: "Tabulka", grade: "3. ročník" },
-  { name: "Výpočet daní", type: "Výpočet", grade: "4. ročník" },
-  { name: "Mzdové výpočty", type: "Simulace", grade: "2. ročník" },
-  { name: "Ekonomické modely", type: "Quiz", grade: "3. ročník" },
-  { name: "Finanční plány", type: "Pexeso", grade: "1. ročník" },
-  { name: "Náklady a výnosy", type: "Tabulka", grade: "4. ročník" },
-  { name: "Marketingové strategie", type: "Simulace", grade: "3. ročník" },
-  { name: "Účetní doklady", type: "Drag & Drop", grade: "2. ročník" },
-  { name: "Investiční plány", type: "Výpočet", grade: "4. ročník" },
-  { name: "Obchodní smlouvy", type: "Quiz", grade: "3. ročník" },
+  { name: "Rozpočet firmy", type: "Quiz", grade: "1. ročník", difficulty: "Lehké" },
+  { name: "Analýza trhu", type: "Drag & Drop", grade: "2. ročník", difficulty: "Střední" },
+  { name: "Závazky a pohledávky", type: "Tabulka", grade: "3. ročník", difficulty: "Těžké" },
+  { name: "Výpočet daní", type: "Výpočet", grade: "4. ročník", difficulty: "Těžké" },
+  { name: "Mzdové výpočty", type: "Simulace", grade: "2. ročník", difficulty: "Střední" },
+  { name: "Ekonomické modely", type: "Quiz", grade: "3. ročník", difficulty: "Lehké" },
+  { name: "Finanční plány", type: "Pexeso", grade: "1. ročník", difficulty: "Lehké" },
+  { name: "Náklady a výnosy", type: "Tabulka", grade: "4. ročník", difficulty: "Střední" },
+  { name: "Marketingové strategie", type: "Simulace", grade: "3. ročník", difficulty: "Těžké" },
+  { name: "Účetní doklady", type: "Drag & Drop", grade: "2. ročník", difficulty: "Střední" },
+  { name: "Investiční plány", type: "Výpočet", grade: "4. ročník", difficulty: "Těžké" },
+  { name: "Obchodní smlouvy", type: "Quiz", grade: "3. ročník", difficulty: "Lehké" },
 ];
 
 export default function EkonomikaPage() {
@@ -25,14 +25,15 @@ export default function EkonomikaPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterGrade, setFilterGrade] = useState("");
   const [filterType, setFilterType] = useState("");
+  const [filterDifficulty, setFilterDifficulty] = useState("");
 
-  // Funkce pro filtraci podle vyhledávacího řetězce i zvolených filtrů
   const filteredExercises = exercisesData.filter((exercise) => {
     const matchName = exercise.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchGrade = filterGrade ? exercise.grade === filterGrade : true;
     const matchType = filterType ? exercise.type === filterType : true;
+    const matchDifficulty = filterDifficulty ? exercise.difficulty === filterDifficulty : true;
 
-    return matchName && matchGrade && matchType;
+    return matchName && matchGrade && matchType && matchDifficulty;
   });
 
   return (
@@ -68,13 +69,13 @@ export default function EkonomikaPage() {
           </p>
 
           {/* Vyhledávání a filtry */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+          <div className="flex flex-wrap md:flex-nowrap gap-4 justify-center items-center mb-6 mt-6">
             <input
               type="text"
               placeholder="Vyhledat cvičení..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-4 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="flex-grow md:flex-none md:w-1/3 px-4 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             />
 
             <select
@@ -102,30 +103,48 @@ export default function EkonomikaPage() {
               <option value="Simulace">Simulace</option>
               <option value="Pexeso">Pexeso</option>
             </select>
+
+            <select
+              value={filterDifficulty}
+              onChange={(e) => setFilterDifficulty(e.target.value)}
+              className="px-4 py-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              <option value="">Všechny obtížnosti</option>
+              <option value="Lehké">Lehké</option>
+              <option value="Střední">Střední</option>
+              <option value="Těžké">Těžké</option>
+            </select>
           </div>
         </div>
 
         {/* Grid layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl w-full">
           {filteredExercises.map((exercise, index) => (
             <div
               key={index}
-              className="p-6 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl shadow-lg text-center hover:scale-105 transition-transform"
+              className="relative p-6 bg-gray-800 rounded-xl shadow-lg text-center hover:shadow-2xl transition-shadow"
             >
-              <h2 className="text-2xl font-bold text-white mb-2">{exercise.name}</h2>
-              <p className="text-gray-200 mb-1">Typ: {exercise.type}</p>
-              <p className="text-gray-200">Ročník: {exercise.grade}</p>
+              <div className="absolute top-2 left-2 px-2 py-1 bg-green-600 text-white text-sm rounded">
+                {exercise.difficulty}
+              </div>
+
+              <h2 className="text-2xl font-bold text-white mb-2 mt-4">{exercise.name}</h2>
+              <p className="text-gray-300 mb-1">Typ: {exercise.type}</p>
+              <p className="text-gray-300">Ročník: {exercise.grade}</p>
               <button
-                onClick={() => {
-                  // Sem můžete přidat router.push nebo zobrazení detailu v modálu
-                  alert(`Spouštím cvičení: ${exercise.name}`);
-                }}
-                className="mt-4 px-4 py-2 bg-white text-green-600 font-semibold rounded hover:bg-green-700 hover:text-white transition-all"
+                className="mt-4 px-4 py-2 bg-green-600 text-white font-semibold rounded hover:bg-green-700 transition-colors"
+                onClick={() => alert(`Spouštím cvičení: ${exercise.name}`)}
               >
                 Spustit cvičení
               </button>
             </div>
           ))}
+
+          {filteredExercises.length === 0 && (
+            <div className="col-span-full text-center text-gray-300 mt-6">
+              <p>Žádné cvičení neodpovídá zadaným kritériím.</p>
+            </div>
+          )}
         </div>
       </div>
 
