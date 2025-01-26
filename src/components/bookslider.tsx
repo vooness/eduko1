@@ -455,13 +455,7 @@ const BookSlider: React.FC = () => {
           kvalitní vzdělávací materiály, které vám pomohou v učení.
         </p>
 
-        <h3 className="text-3xl font-semibold text-green-600 mb-2">
-          Video návod: Jak aktivovat online knihu
-        </h3>
-        <p className="text-gray-200 mb-12">
-          Sledujte následující video, kde se dozvíte, jak snadno aktivovat vaši
-          online knihu.
-        </p>
+        
 
         {/* Kategorie tlačítka */}
         <div className="flex flex-wrap gap-3 mb-6 justify-center lg:justify-start">

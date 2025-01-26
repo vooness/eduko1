@@ -14,7 +14,7 @@ export function middleware(req: NextRequest) {
   const validToken = "special123";
 
   // Pokud uživatel už je na /pristup-odepren, nepřesměrovávat znovu
-  if (url.pathname.startsWith("/pristup-odepren")) {
+  if (url.pathname.startsWith("/Pristup-odepren")) {
     return NextResponse.next();
   }
 
@@ -36,7 +36,7 @@ export function middleware(req: NextRequest) {
   }
 
   // Přesměrování na stránku s odepřením přístupu
-  return NextResponse.redirect(new URL("/pristup-odepren", req.url));
+  return NextResponse.redirect(new URL("/Pristup-odepren", req.url));
 }
 
 // Konfigurace matcheru

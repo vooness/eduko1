@@ -55,7 +55,7 @@ const HeroSection = () => {
   ];
 
   return (
-    <section className="relative bg-gray-900 text-white py-12 sm:py-20 lg:py-28 flex items-center justify-center overflow-hidden px-6 sm:px-8 lg:px-20 min-h-screen">
+    <section className="relative bg-gray-900 text-white py-6 sm:py-10 lg:py-12 flex items-center justify-center overflow-hidden px-6 sm:px-8 lg:px-20 min-h-screen">
       
 
       <div className="relative flex flex-col items-center w-full max-w-7xl mt-12 z-10">
@@ -68,7 +68,7 @@ const HeroSection = () => {
             className="flex flex-col gap-4 sm:gap-6 text-center lg:text-left flex-1"
           >
             <p className="text-base sm:text-lg text-gray-300 mb-6">
-              Učebnice • Semináře • Elektronické výukové materiály • Interaktivní cvičení
+            • Elektronické výukové materiály • Interaktivní cvičení
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-6xl font-bold leading-tight text-green-600 ">
               Zlepšujeme vzdělávání <br />
@@ -101,7 +101,7 @@ const HeroSection = () => {
   src="/imgs/book10.png"
   alt="Eduko ilustrace"
   className="relative z-20 w-[600px] h-[400px] lg:w-[600px] lg:h-[600px] xl:w-[700px] object-contain sm:scale-100 lg:left-[80px]"
-  style={{ transform: 'scale(1.2)' }}
+  
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ duration: 0.8 }}
@@ -111,8 +111,32 @@ const HeroSection = () => {
           
         </div>
 
+        {/* 2) Naše klíčové body (dole) - zarovnání vlevo */}
+        <div className="w-full max-w-5xl mt-16 lg:mt-12 mb-12">
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            // 2 sloupce na nejmenších displejích, 4 sloupce od lg
+            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
+            {statsData.map(({ icon, label, description }, index) => (
+              <div key={index} className="flex flex-col items-start gap-3">
+                <div className="text-green-600 text-4xl">{icon}</div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white">
+                  {label}
+                </h3>
+                <p className="text-sm sm:text-base text-gray-300 max-w-xs">
+                  {description}
+                </p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
         {/* 1) Rychlý přehled (nahoře) */}
-        <div className="w-full max-w-5xl mt-12 lg:mt-8">
+        <div className="w-full max-w-5xl mt-12 lg:mt-24">
           <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-8 text-left">
             Rychlý přehled
           </h2>
@@ -157,49 +181,7 @@ const HeroSection = () => {
           </motion.div>
         </div>
 
-        {/* 2) Naše klíčové body (dole) - zarovnání vlevo */}
-        <div className="w-full max-w-5xl mt-16 lg:mt-24">
-          {/* Nadpis sekce vlevo */}
-          <motion.h2
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-3xl sm:text-4xl font-bold text-white text-left mb-4"
-          >
-            Naše klíčové body
-          </motion.h2>
-
-          {/* Podnadpis sekce vlevo */}
-          <motion.p
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-gray-300 text-left max-w-3xl mb-16 mt-4"
-          >
-            Přinášíme to nejlepší pro vaše vzdělávání – srozumitelně,
-            interaktivně a vždy aktuálně.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            // 2 sloupce na nejmenších displejích, 4 sloupce od lg
-            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8"
-          >
-            {statsData.map(({ icon, label, description }, index) => (
-              <div key={index} className="flex flex-col items-start gap-3">
-                <div className="text-green-600 text-4xl">{icon}</div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white">
-                  {label}
-                </h3>
-                <p className="text-sm sm:text-base text-gray-300 max-w-xs">
-                  {description}
-                </p>
-              </div>
-            ))}
-          </motion.div>
-        </div>
+        
       </div>
     </section>
   );

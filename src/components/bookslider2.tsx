@@ -156,6 +156,14 @@ const EdukoSlider: React.FC = () => {
   return (
     <section className="bg-gray-900 text-white py-8 px-4">
       <div className="max-w-7xl mx-auto">
+
+      <h3 className="text-3xl font-semibold text-green-600 mb-2">
+          Video návod: Jak aktivovat online knihu
+        </h3>
+        <p className="text-gray-200 mb-12">
+          Sledujte následující video, kde se dozvíte, jak snadno aktivovat vaši
+          online knihu.
+        </p>
         <h2 className="text-4xl font-bold mb-4 text-green-600">
           Elektronické výukové materiály EDUKO
         </h2>
