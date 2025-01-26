@@ -71,8 +71,8 @@ const HeroSection = () => {
             • Elektronické výukové materiály • Interaktivní cvičení
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-6xl font-bold leading-tight text-green-600 ">
-              Zlepšujeme vzdělávání <br />
-              moderními nástroji
+              Interaktivní vzdělávací <br />
+              cvičení
             </h1>
             <p className="text-sm sm:text-base lg:text-lg text-gray-300 max-w-md sm:max-w-lg mx-auto lg:mx-0 mt-4">
               Nabízíme moderní řešení pro učitele, studenty i instituce –

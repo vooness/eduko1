@@ -8,7 +8,7 @@ import { useState } from "react";
 // Pole s cvičeními v biologii
 const exercisesData = [
   { name: "Základy biologie", type: "Quiz", grade: "1. ročník", difficulty: "Lehké", path: "/InteraktivniCviceni/Biologie/ZakladyBiologie" },
-  { name: "Buňky a jejich funkce", type: "Drag & Drop", grade: "2. ročník", difficulty: "Střední" },
+  { name: "Buňky a jejich funkce", type: "Drag & Drop", grade: "2. ročník", difficulty: "Střední", path: "/InteraktivniCviceni/Biologie/Biologieukol2" },
   { name: "Fotosyntéza", type: "Tabulka", grade: "3. ročník", difficulty: "Těžké" },
   { name: "Lidské tělo", type: "Pexeso", grade: "4. ročník", difficulty: "Lehké" },
   { name: "Ekosystémy", type: "Simulace", grade: "2. ročník", difficulty: "Těžké" },
