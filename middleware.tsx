@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
+  console.log("hello")
   const url = req.nextUrl;
   const token = url.searchParams.get("token");
 

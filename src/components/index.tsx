@@ -86,7 +86,7 @@ const HeroSection = () => {
     Interaktivní cvičení →
   </a>
   <a
-    href="/flexibook.com"
+    href="http://www.flexibook.cz"
     className="w-full max-w-xs px-5 py-2  sm:py-3 border-2 border-green-600 text-green-600 font-medium rounded-full hover:bg-green-600 hover:text-white transition text-center"
   >
     Aktivovat knihy na Flexibooku →

@@ -2,15 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart"; // Cart Icon
-import Badge from "@mui/material/Badge"; // Badge for cart count
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Badge from "@mui/material/Badge";
+import SearchIcon from "@mui/icons-material/Search";
+import SchoolIcon from "@mui/icons-material/School";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false); // State for cart dropdown
+  const [isOpen, setIsOpen] = useState(false);       // for mobile menu
+  const [isCartOpen, setIsCartOpen] = useState(false); // for cart dropdown
+  const [searchOpen, setSearchOpen] = useState(false); // for toggling search on mobile
 
-  // Tracking scroll to change navbar background
+  // Track scrolling to change navbar background
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -22,7 +25,7 @@ const Navbar = () => {
     };
   }, []);
 
-  // Framer Motion animations for mobile menu
+  // Framer Motion variants for mobile menu
   const menuVariants: Variants = {
     hidden: {
       y: "-100%",
@@ -48,7 +51,7 @@ const Navbar = () => {
     },
   };
 
-  // Framer Motion animations for cart dropdown
+  // Framer Motion variants for cart dropdown
   const cartVariants: Variants = {
     hidden: {
       opacity: 0,
@@ -63,11 +66,8 @@ const Navbar = () => {
     },
   };
 
-  // Example cart items (you can replace this with actual cart data)
-  const cartItems: any[] = [
-    // Example item
-    // { id: 1, name: "Book Title", quantity: 2, price: 19.99 },
-  ];
+  // Example cart items (empty for now)
+  const cartItems: any[] = [];
 
   return (
     <nav
@@ -81,12 +81,13 @@ const Navbar = () => {
         {/* Logo */}
         <a
           href="/"
-          className="text-2xl font-bold bg-gradient-to-r from-green-500 to-blue-500 text-transparent bg-clip-text"
+          className="flex items-center text-2xl font-bold bg-gradient-to-r from-green-500 to-blue-500 text-transparent bg-clip-text"
         >
+          <SchoolIcon className="mr-2 text-green-500" fontSize="large" />
           I-EDUKO
         </a>
 
-        {/* Search bar */}
+        {/* Search bar (Desktop only) */}
         <div className="hidden lg:flex items-center flex-1 mx-6">
           <input
             type="text"
@@ -95,59 +96,100 @@ const Navbar = () => {
           />
         </div>
 
-        {/* Desktop Menu and Cart */}
+        {/* Desktop Menu & Cart */}
         <div className="hidden lg:flex items-center space-x-8">
-          {/* Navigation Links */}
           <ul className="flex items-center gap-8">
-          <li>
+            {/* Dropdown for "INTERAKTIVNÍ CVIČENÍ" */}
+            <li className="relative group">
+              {/* Odkaz + Šipka dolů (trojúhelník) */}
               <a
                 href="/InteraktivniCviceni"
-                className="relative group transition-all duration-300"
+                className="relative transition-all duration-300 group-hover:text-green-600 flex items-center"
               >
                 INTERAKTIVNÍ CVIČENÍ
-                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                {/* Trojúhelník vedle textu */}
+                <span className="ml-1">▼</span>
+                {/* Spodní linková animace */}
+                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full" />
               </a>
+
+              {/* Submenu, zobrazí se při hoveru */}
+              <div
+                className="absolute left-0 top-full min-w-[180px] bg-white 
+                           text-green-900 rounded shadow-lg py-2 
+                           opacity-0 translate-y-1 pointer-events-none 
+                           group-hover:opacity-100 group-hover:translate-y-0 
+                           group-hover:pointer-events-auto transition-all 
+                           duration-300 z-50"
+              >
+                <ul>
+                  <li>
+                    <a
+                      href="/InteraktivniCviceni/Ekonomika"
+                      className="block px-4 py-2 hover:bg-green-100"
+                    >
+                      Ekonomika
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/InteraktivniCviceni/Pravo"
+                      className="block px-4 py-2 hover:bg-green-100"
+                    >
+                      Právo
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/InteraktivniCviceni/Biologie"
+                      className="block px-4 py-2 hover:bg-green-100"
+                    >
+                      Biologie
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/InteraktivniCviceni/Komunikace"
+                      className="block px-4 py-2 hover:bg-green-100"
+                    >
+                      Komunikace
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </li>
+
             <li>
               <a
-                href="#knihy"
+                href="#Knihy"
                 className="relative group transition-all duration-300"
               >
                 NAŠE KNIHY
-                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full" />
               </a>
             </li>
             <li>
               <a
-                href="#seminare"
+                href="https://www.eduko.cz/cz/seminare-2024-25/"
                 className="relative group transition-all duration-300"
               >
                 SEMINÁŘE
-                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full" />
               </a>
             </li>
-          
+           
             <li>
               <a
-                href="#kontakt"
-                className="relative group transition-all duration-300"
-              >
-                KONTAKT
-                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#e-eduko"
+                href="https://eduko.elmg.net"
                 className="relative group transition-all duration-300"
               >
                 e-EDUKO
-                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full" />
               </a>
             </li>
           </ul>
 
-          {/* Shopping Cart */}
+          {/* Cart */}
           <div
             className="relative"
             onMouseEnter={() => setIsCartOpen(true)}
@@ -179,16 +221,11 @@ const Navbar = () => {
                   ) : (
                     <ul>
                       {cartItems.map((item) => (
-                        <li
-                          key={item.id}
-                          className="flex justify-between mb-1"
-                        >
+                        <li key={item.id} className="flex justify-between mb-1">
                           <span>
                             {item.name} x{item.quantity}
                           </span>
-                          <span>
-                            ${(item.price * item.quantity).toFixed(2)}
-                          </span>
+                          <span>${(item.price * item.quantity).toFixed(2)}</span>
                         </li>
                       ))}
                     </ul>
@@ -207,14 +244,15 @@ const Navbar = () => {
 
         {/* Mobile Icons */}
         <div className="flex items-center lg:hidden space-x-4">
-          {/* Shorter Search Bar on Mobile */}
-          <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Hledat..."
-              className="w-full px-3 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
-            />
-          </div>
+          {/* Search icon toggle on mobile - green */}
+          <motion.button
+            className="focus:outline-none text-green-600 hover:text-green-800 transition"
+            onClick={() => setSearchOpen(!searchOpen)}
+            aria-label="Toggle search"
+            whileTap={{ scale: 0.9 }}
+          >
+            <SearchIcon fontSize="large" />
+          </motion.button>
 
           {/* Shopping Cart on Mobile */}
           <div
@@ -231,7 +269,7 @@ const Navbar = () => {
               </Badge>
             </a>
 
-            {/* Cart Dropdown */}
+            {/* Cart Dropdown (Mobile) */}
             <AnimatePresence>
               {isCartOpen && (
                 <motion.div
@@ -248,16 +286,11 @@ const Navbar = () => {
                   ) : (
                     <ul>
                       {cartItems.map((item) => (
-                        <li
-                          key={item.id}
-                          className="flex justify-between mb-1"
-                        >
+                        <li key={item.id} className="flex justify-between mb-1">
                           <span>
                             {item.name} x{item.quantity}
                           </span>
-                          <span>
-                            ${(item.price * item.quantity).toFixed(2)}
-                          </span>
+                          <span>${(item.price * item.quantity).toFixed(2)}</span>
                         </li>
                       ))}
                     </ul>
@@ -285,16 +318,56 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* Mobile Full-Width Search Bar */}
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            className={`lg:hidden w-full px-4 py-3 bg-white shadow-md ${
+              isScrolled ? "pt-4" : "pt-[1rem]"
+            }`}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <input
+              type="text"
+              placeholder="Hledat..."
+              className="w-full px-4 py-2 rounded-full border border-gray-300 
+                         focus:outline-none focus:ring-2 focus:ring-green-500 
+                         text-sm"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="absolute top-0 left-0 w-full h-screen bg-green-500 text-white flex flex-col items-center justify-center space-y-6 text-xl"
+            className="absolute top-0 left-0 w-full h-screen bg-gradient-to-b from-green-600 to-green-500 text-white flex flex-col items-center justify-center space-y-6 text-xl"
             variants={menuVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
           >
+            {/* Optional informational text */}
+            <p className="text-center px-6 text-base md:text-lg mb-4">
+              Vítejte v I-EDUKOA! Vyberte si z možností níže
+              a objevte více o našich vzdělávacích materiálech.
+            </p>
+
+            {/* 
+              Jednoduchý seznam odkazů pro mobilní menu,
+              pokud chcete replikovat dropdown i pro mobil, je potřeba jiná logika.
+            */}
+            <a
+              href="/InteraktivniCviceni"
+              onClick={() => setIsOpen(false)}
+              className="hover:text-gray-200 transition"
+            >
+              INTERAKTIVNÍ CVIČENÍ
+            </a>
             <a
               href="#knihy"
               onClick={() => setIsOpen(false)}
@@ -303,7 +376,7 @@ const Navbar = () => {
               NAŠE KNIHY
             </a>
             <a
-              href="#seminare"
+              href="https://www.eduko.cz/cz/seminare-2024-25/"
               onClick={() => setIsOpen(false)}
               className="hover:text-gray-200 transition"
             >
@@ -316,15 +389,9 @@ const Navbar = () => {
             >
               INFORMACE
             </a>
+          
             <a
-              href="#kontakt"
-              onClick={() => setIsOpen(false)}
-              className="hover:text-gray-200 transition"
-            >
-              KONTAKT
-            </a>
-            <a
-              href="#e-eduko"
+              href="https://eduko.elmg.net"
               onClick={() => setIsOpen(false)}
               className="hover:text-gray-200 transition"
             >

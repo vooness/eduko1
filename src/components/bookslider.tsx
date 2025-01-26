@@ -446,8 +446,8 @@ const BookSlider: React.FC = () => {
   };
 
   return (
-    <section className="bg-gray-900 text-white py-8 px-4">
-      <div className="max-w-7xl mx-auto">
+    <section  id="Knihy" className="bg-gray-900 text-white py-8 px-4 ">
+      <div className="max-w-7xl mx-auto mt-24">
         <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-green-600">Naše knihy</h2>
         <h2 className="text-2xl sm:text-xl mb-4 text-green-600">Pro střední školy a gymnázia</h2>
         <p className="text-lg mb-6">

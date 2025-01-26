@@ -1,10 +1,13 @@
+"use client"
+
 import Navbar from "@/components/navbar";
 import Index from "@/components/index";
 import Footer from "@/components/footer";
 import BookSlider from "@/components/bookslider";
-import EdukoSlider from "@/components/bookslider2"; // Import druhého slideru
+import EdukoSlider from "@/components/bookslider2";
 import AboutEdukoSection from "@/components/AboutEdukoSection";
 import TeachingMaterials from "@/components/TeachingMaterials";
+import ChatWidget from "@/components/ChatWidget"; // <-- Import ChatWidget
 
 export default function Home() {
   return (
@@ -12,19 +15,14 @@ export default function Home() {
       {/* Navbar */}
       <Navbar />
 
-      {/* Main content area grows to fill space */}
+      {/* Main content area */}
       <div className="flex-grow">
         <Index />
-
         {/* První slider */}
         <BookSlider />
-
-        {/* Druhý slider vložený pod první */}
+        {/* Druhý slider */}
         <EdukoSlider />
-      </div>
-
-      {/* TeachingMaterials section */}
-      <div className="">
+        {/* TeachingMaterials */}
         <TeachingMaterials />
       </div>
 
@@ -33,6 +31,9 @@ export default function Home() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Chat Widget (vpravo dole) */}
+      <ChatWidget />
     </div>
   );
 }
