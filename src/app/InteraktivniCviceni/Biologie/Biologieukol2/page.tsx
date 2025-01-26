@@ -2,6 +2,7 @@
 
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import Script from "next/script";
 
 export default function BiologieUkol2Page() {
   return (
@@ -36,8 +37,8 @@ export default function BiologieUkol2Page() {
       {/* Footer */}
       <Footer />
 
-      {/* Dynamické načtení skriptu pro H5P resizer */}
-      <script src="https://i-eduko.h5p.com/js/h5p-resizer.js" charSet="UTF-8"></script>
+      {/* Dynamické načtení skriptu */}
+      <Script src="https://i-eduko.h5p.com/js/h5p-resizer.js" strategy="lazyOnload" charSet="UTF-8" />
     </div>
   );
 }
