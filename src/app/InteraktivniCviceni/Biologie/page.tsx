@@ -9,9 +9,9 @@ import { useState } from "react";
 const exercisesData = [
   { name: "Základy biologie", type: "Quiz", grade: "1. ročník", difficulty: "Lehké", path: "/InteraktivniCviceni/Biologie/ZakladyBiologie" },
   { name: "Buňky a jejich funkce", type: "Drag & Drop", grade: "2. ročník", difficulty: "Střední", path: "/InteraktivniCviceni/Biologie/Biologieukol2" },
-  { name: "Fotosyntéza", type: "Tabulka", grade: "3. ročník", difficulty: "Těžké" },
-  { name: "Lidské tělo", type: "Pexeso", grade: "4. ročník", difficulty: "Lehké" },
-  { name: "Ekosystémy", type: "Simulace", grade: "2. ročník", difficulty: "Těžké" },
+  { name: "Fotosyntéza", type: "Tabulka", grade: "3. ročník", difficulty: "Těžké"  , path: "/InteraktivniCviceni/Biologie/Biologieukol3"},
+  { name: "Lidské tělo", type: "Pexeso", grade: "4. ročník", difficulty: "Lehké" , path: "/InteraktivniCviceni/Biologie/Biologieukol4"},
+  { name: "Ekosystémy", type: "Simulace", grade: "2. ročník", difficulty: "Těžké" ,  path: "/InteraktivniCviceni/Biologie/Biologieukol5" },
   { name: "Genetika", type: "Výpočet", grade: "3. ročník", difficulty: "Těžké" },
   { name: "Zvířecí říše", type: "Pexeso", grade: "1. ročník", difficulty: "Lehké" },
   { name: "Rostliny a jejich části", type: "Quiz", grade: "4. ročník", difficulty: "Střední" },
