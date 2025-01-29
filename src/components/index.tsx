@@ -68,7 +68,7 @@ const HeroSection = () => {
             className="flex flex-col gap-4 sm:gap-6 text-center lg:text-left flex-1"
           >
             <p className="text-base sm:text-lg text-gray-300 mb-6">
-            • Elektronické výukové materiály • Interaktivní cvičení
+             • Interaktivní cvičení
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-6xl font-bold leading-tight text-green-600 ">
               Interaktivní vzdělávací <br />
@@ -85,12 +85,7 @@ const HeroSection = () => {
   >
     Interaktivní cvičení →
   </a>
-  <a
-    href="http://www.flexibook.cz"
-    className="w-full max-w-xs px-5 py-2  sm:py-3 border-2 border-green-600 text-green-600 font-medium rounded-full hover:bg-green-600 hover:text-white transition text-center"
-  >
-    Aktivovat knihy na Flexibooku →
-  </a>
+  
 </div>
 
           </motion.div>
@@ -135,51 +130,7 @@ const HeroSection = () => {
           </motion.div>
         </div>
 
-        {/* 1) Rychlý přehled (nahoře) */}
-        <div className="w-full max-w-5xl mt-12 lg:mt-24">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-8 text-left">
-            Rychlý přehled
-          </h2>
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center"
-          >
-            {menuItems.map((item, index) => (
-              <motion.div
-                key={index}
-                whileHover={{
-                  scale: 1.05,
-                  rotateX: 5,
-                  rotateY: -5,
-                  boxShadow: "0 10px 20px rgba(16, 185, 129, 0.5)",
-                }}
-                className="flex flex-col items-center bg-gray-800 rounded-3xl p-6 shadow-lg transition-transform duration-300 cursor-pointer relative overflow-hidden"
-              >
-                {/* Glow effect */}
-                <motion.div
-                  className="absolute inset-0 rounded-3xl"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                ></motion.div>
-
-                <a
-                  href={`#${item.title.replace(/\s+/g, "-").toLowerCase()}`}
-                  className="relative flex flex-col items-center z-10"
-                >
-                  <div className="text-green-600 text-4xl mb-4 transition-transform duration-300">
-                    {item.icon}
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-medium text-white transition-colors duration-300">
-                    {item.title}
-                  </h3>
-                </a>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
+       
 
         
       </div>

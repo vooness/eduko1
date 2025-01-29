@@ -1,32 +1,81 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import Badge from "@mui/material/Badge";
+import { motion, AnimatePresence } from "framer-motion";
 import SearchIcon from "@mui/icons-material/Search";
 import SchoolIcon from "@mui/icons-material/School";
 
+// Definice typů
+interface Chapter {
+  range: string;
+}
+
+interface Year {
+  chapters: Chapter[];
+}
+
+interface Subject {
+  name: string;
+  years: {
+    [key: number]: string[];
+  };
+}
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);       // for mobile menu
-  const [isCartOpen, setIsCartOpen] = useState(false); // for cart dropdown
-  const [searchOpen, setSearchOpen] = useState(false); // for toggling search on mobile
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const [selectedYear, setSelectedYear] = useState<string | null>(null);
 
-  // Track scrolling to change navbar background
+  const mainSubjects: Subject[] = [
+    {
+      name: "ÚČETNICTVÍ",
+      years: {
+        1: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"],
+        2: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"],
+        3: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"],
+        4: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"]
+      }
+    },
+    {
+      name: "EKONOMIKA",
+      years: {
+        1: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"],
+        2: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"],
+        3: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"],
+        4: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"]
+      }
+    },
+    {
+      name: "PRÁVO",
+      years: {
+        1: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"],
+        2: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"],
+        3: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"],
+        4: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"]
+      }
+    },
+    {
+      name: "MARKETING",
+      years: {
+        1: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"],
+        2: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"],
+        3: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"],
+        4: ["1-20", "21-40", "41-60", "61-80", "81-100", "101-120", "121-140"]
+      }
+    }
+  ];
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Framer Motion variants for mobile menu
-  const menuVariants: Variants = {
+  const menuVariants = {
     hidden: {
       y: "-100%",
       opacity: 0,
@@ -51,24 +100,6 @@ const Navbar = () => {
     },
   };
 
-  // Framer Motion variants for cart dropdown
-  const cartVariants: Variants = {
-    hidden: {
-      opacity: 0,
-      scale: 0.95,
-    },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
-
-  // Example cart items (empty for now)
-  const cartItems: any[] = [];
-
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
@@ -87,226 +118,62 @@ const Navbar = () => {
           I-EDUKO
         </a>
 
-        {/* Search bar (Desktop only) */}
-        <div className="hidden lg:flex items-center flex-1 mx-6">
-          <input
-            type="text"
-            placeholder="Hledat..."
-            className="w-[300px] px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-        </div>
-
-        {/* Desktop Menu & Cart */}
+        {/* Desktop Menu */}
         <div className="hidden lg:flex items-center space-x-8">
           <ul className="flex items-center gap-8">
-            {/* Dropdown for "INTERAKTIVNÍ CVIČENÍ" */}
-            <li className="relative group">
-              {/* Odkaz + Šipka dolů (trojúhelník) */}
-              <a
-                href="/InteraktivniCviceni"
-                className="relative transition-all duration-300 group-hover:text-green-600 flex items-center"
-              >
-                INTERAKTIVNÍ CVIČENÍ
-                {/* Trojúhelník vedle textu */}
-                <span className="ml-1">▼</span>
-                {/* Spodní linková animace */}
-                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full" />
-              </a>
-
-              {/* Submenu, zobrazí se při hoveru */}
-              <div
-                className="absolute left-0 top-full min-w-[180px] bg-white 
-                           text-green-900 rounded shadow-lg py-2 
-                           opacity-0 translate-y-1 pointer-events-none 
-                           group-hover:opacity-100 group-hover:translate-y-0 
-                           group-hover:pointer-events-auto transition-all 
-                           duration-300 z-50"
-              >
-                <ul>
-                  <li>
-                    <a
-                      href="/InteraktivniCviceni/Ekonomika"
-                      className="block px-4 py-2 hover:bg-green-100"
-                    >
-                      Ekonomika
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/InteraktivniCviceni/Pravo"
-                      className="block px-4 py-2 hover:bg-green-100"
-                    >
-                      Právo
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/InteraktivniCviceni/Biologie"
-                      className="block px-4 py-2 hover:bg-green-100"
-                    >
-                      Biologie
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/InteraktivniCviceni/Komunikace"
-                      className="block px-4 py-2 hover:bg-green-100"
-                    >
-                      Komunikace
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-
-            <li>
-              <a
-                href="#Knihy"
-                className="relative group transition-all duration-300"
-              >
-                NAŠE KNIHY
-                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full" />
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.eduko.cz/cz/seminare-2024-25/"
-                className="relative group transition-all duration-300"
-              >
-                SEMINÁŘE
-                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full" />
-              </a>
-            </li>
-           
-            <li>
-              <a
-                href="https://eduko.elmg.net"
-                className="relative group transition-all duration-300"
-              >
-                e-EDUKO
-                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full" />
-              </a>
-            </li>
-          </ul>
-
-          {/* Cart */}
-          <div
-            className="relative"
-            onMouseEnter={() => setIsCartOpen(true)}
-            onMouseLeave={() => setIsCartOpen(false)}
-          >
-            <a
-              href="#kosik"
-              className="text-green-600 hover:text-green-800 transition flex items-center"
-            >
-              <Badge badgeContent={cartItems.length} color="error">
-                <ShoppingCartIcon fontSize="large" />
-              </Badge>
-            </a>
-
-            {/* Cart Dropdown */}
-            <AnimatePresence>
-              {isCartOpen && (
-                <motion.div
-                  className="absolute right-0 mt-2 w-64 bg-white text-gray-800 rounded-lg shadow-lg p-4 z-50"
-                  variants={cartVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  style={{ pointerEvents: isCartOpen ? "auto" : "none" }}
+            {mainSubjects.map((subject, index) => (
+              <li key={index} className="relative group">
+                <a
+                  href="#"
+                  className="relative transition-all duration-300 group-hover:text-green-600 flex items-center"
                 >
-                  <h3 className="text-lg font-semibold mb-2">Váš košík</h3>
-                  {cartItems.length === 0 ? (
-                    <p className="text-sm">Košík je prázdný.</p>
-                  ) : (
-                    <ul>
-                      {cartItems.map((item) => (
-                        <li key={item.id} className="flex justify-between mb-1">
-                          <span>
-                            {item.name} x{item.quantity}
-                          </span>
-                          <span>${(item.price * item.quantity).toFixed(2)}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <a
-                    href="#kosik"
-                    className="mt-4 inline-block bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition"
-                  >
-                    Pokračovat k nákupu
-                  </a>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                  {subject.name}
+                  <span className="ml-1">▼</span>
+                  <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full" />
+                </a>
+
+                {/* Ročníky submenu */}
+                <div className="absolute left-0 top-full bg-white text-green-900 rounded shadow-lg py-2 
+                             opacity-0 translate-y-1 pointer-events-none 
+                             group-hover:opacity-100 group-hover:translate-y-0 
+                             group-hover:pointer-events-auto transition-all 
+                             duration-300 z-50 min-w-[160px]">
+                  {Object.entries(subject.years).map(([year, chapters]) => (
+                    <div key={year} className="relative group/year">
+                      <a
+                        href="#"
+                        className="block px-4 py-2 hover:bg-green-100 justify-between items-center"
+                      >
+                        {year}. ročník
+                        <span className="ml-2">▶</span>
+                      </a>
+
+                      {/* Kapitoly submenu */}
+                      <div className="absolute left-full top-0 bg-white text-green-900 rounded shadow-lg py-2 
+                                   opacity-0 translate-x-1 pointer-events-none 
+                                   group-hover/year:opacity-100 group-hover/year:translate-x-0 
+                                   group-hover/year:pointer-events-auto transition-all 
+                                   duration-300 min-w-[180px]">
+                        {chapters.map((kapitola, kIndex) => (
+                          <a
+                            key={kIndex}
+                            href={`/InteraktivniCviceni/${subject.name}/Rocnik-${year}/Kapitoly-${kapitola}`}
+                            className="block px-4 py-2 hover:bg-green-100"
+                          >
+                            Kapitoly {kapitola}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Mobile Icons */}
         <div className="flex items-center lg:hidden space-x-4">
-          {/* Search icon toggle on mobile - green */}
-          <motion.button
-            className="focus:outline-none text-green-600 hover:text-green-800 transition"
-            onClick={() => setSearchOpen(!searchOpen)}
-            aria-label="Toggle search"
-            whileTap={{ scale: 0.9 }}
-          >
-            <SearchIcon fontSize="large" />
-          </motion.button>
-
-          {/* Shopping Cart on Mobile */}
-          <div
-            className="relative"
-            onMouseEnter={() => setIsCartOpen(true)}
-            onMouseLeave={() => setIsCartOpen(false)}
-          >
-            <a
-              href="#kosik"
-              className="text-green-600 hover:text-green-800 transition flex items-center"
-            >
-              <Badge badgeContent={cartItems.length} color="error">
-                <ShoppingCartIcon fontSize="large" />
-              </Badge>
-            </a>
-
-            {/* Cart Dropdown (Mobile) */}
-            <AnimatePresence>
-              {isCartOpen && (
-                <motion.div
-                  className="absolute right-0 mt-2 w-56 bg-white text-gray-800 rounded-lg shadow-lg p-4 z-50"
-                  variants={cartVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  style={{ pointerEvents: isCartOpen ? "auto" : "none" }}
-                >
-                  <h3 className="text-lg font-semibold mb-2">Váš košík</h3>
-                  {cartItems.length === 0 ? (
-                    <p className="text-sm">Košík je prázdný.</p>
-                  ) : (
-                    <ul>
-                      {cartItems.map((item) => (
-                        <li key={item.id} className="flex justify-between mb-1">
-                          <span>
-                            {item.name} x{item.quantity}
-                          </span>
-                          <span>${(item.price * item.quantity).toFixed(2)}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <a
-                    href="#kosik"
-                    className="mt-4 inline-block bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition"
-                  >
-                    Pokračovat k nákupu
-                  </a>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Mobile Menu Button */}
           <motion.button
             className="text-2xl focus:outline-none"
             onClick={() => setIsOpen(!isOpen)}
@@ -318,87 +185,68 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Full-Width Search Bar */}
-      <AnimatePresence>
-        {searchOpen && (
-          <motion.div
-            className={`lg:hidden w-full px-4 py-3 bg-white shadow-md ${
-              isScrolled ? "pt-4" : "pt-[1rem]"
-            }`}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-          >
-            <input
-              type="text"
-              placeholder="Hledat..."
-              className="w-full px-4 py-2 rounded-full border border-gray-300 
-                         focus:outline-none focus:ring-2 focus:ring-green-500 
-                         text-sm"
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="absolute top-0 left-0 w-full h-screen bg-gradient-to-b from-green-600 to-green-500 text-white flex flex-col items-center justify-center space-y-6 text-xl"
+            className="absolute top-0 left-0 w-full h-screen bg-gradient-to-b from-green-600 to-green-500 text-white"
             variants={menuVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
           >
-            {/* Optional informational text */}
-            <p className="text-center px-6 text-base md:text-lg mb-4">
-              Vítejte v I-EDUKOA! Vyberte si z možností níže
-              a objevte více o našich vzdělávacích materiálech.
-            </p>
+            <div className="pt-20 px-6">
+              {mainSubjects.map((subject, index) => (
+                <div key={index} className="mb-6">
+                  <button
+                    onClick={() => setSelectedSubject(selectedSubject === subject.name ? null : subject.name)}
+                    className="w-full text-left py-2 px-4 text-lg font-semibold hover:bg-green-500 rounded transition-colors"
+                  >
+                    {subject.name}
+                  </button>
+                  
+                  {selectedSubject === subject.name && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="ml-4 mt-2"
+                    >
+                      {Object.entries(subject.years).map(([year, chapters]) => (
+                        <div key={year} className="mb-2">
+                          <button
+                            onClick={() => setSelectedYear(selectedYear === year ? null : year)}
+                            className="w-full text-left py-2 px-4 hover:bg-green-500 rounded transition-colors"
+                          >
+                            {year}. ročník
+                          </button>
+                          
+                          {selectedYear === year && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="ml-4 mt-1"
+                            >
+                              {chapters.map((kapitola, kIndex) => (
+                                <a
+                                  key={kIndex}
+                                  href={`/InteraktivniCviceni/${subject.name}/Rocnik-${year}/Kapitoly-${kapitola}`}
+                                  className="block py-2 px-4 text-sm hover:bg-green-500 rounded transition-colors"
+                                >
+                                  Kapitoly {kapitola}
+                                </a>
+                              ))}
+                            </motion.div>
+                          )}
+                        </div>
+                      ))}
+                    </motion.div>
+                  )}
+                </div>
+              ))}
+            </div>
 
-            {/* 
-              Jednoduchý seznam odkazů pro mobilní menu,
-              pokud chcete replikovat dropdown i pro mobil, je potřeba jiná logika.
-            */}
-            <a
-              href="/InteraktivniCviceni"
-              onClick={() => setIsOpen(false)}
-              className="hover:text-gray-200 transition"
-            >
-              INTERAKTIVNÍ CVIČENÍ
-            </a>
-            <a
-              href="#knihy"
-              onClick={() => setIsOpen(false)}
-              className="hover:text-gray-200 transition"
-            >
-              NAŠE KNIHY
-            </a>
-            <a
-              href="https://www.eduko.cz/cz/seminare-2024-25/"
-              onClick={() => setIsOpen(false)}
-              className="hover:text-gray-200 transition"
-            >
-              SEMINÁŘE
-            </a>
-            <a
-              href="#informace"
-              onClick={() => setIsOpen(false)}
-              className="hover:text-gray-200 transition"
-            >
-              INFORMACE
-            </a>
-          
-            <a
-              href="https://eduko.elmg.net"
-              onClick={() => setIsOpen(false)}
-              className="hover:text-gray-200 transition"
-            >
-              e-EDUKO
-            </a>
-
-            {/* Close Button */}
             <button
               onClick={() => setIsOpen(false)}
               className="absolute top-4 right-4 text-3xl"

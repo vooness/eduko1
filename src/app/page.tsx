@@ -18,16 +18,10 @@ export default function Home() {
       {/* Main content area */}
       <div className="flex-grow">
         <Index />
-        {/* První slider */}
-        <BookSlider />
-        {/* Druhý slider */}
-        <EdukoSlider />
-        {/* TeachingMaterials */}
-        <TeachingMaterials />
+        
       </div>
 
-      {/* AboutEdukoSection */}
-      <AboutEdukoSection />
+      
 
       {/* Footer */}
       <Footer />
